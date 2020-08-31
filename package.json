@@ -1,17 +1,29 @@
 {
   "name": "electron-auto-update-example",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.15",
+  "description": "desc",
   "main": "main.js",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/johndyer24/electron-auto-update-example.git"
+    "type": "git",
+    "url": "https://github.com/sarthak1994/electron-auto-update-example.git"
+  },
+  "build": {
+    "asar": false,
+    "win": {
+      
+    },
+    "nsis": {
+      "guid": "eb1a0fbb-fc70-428e-97f1-fa7080894806",
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-builder build --mac --win --publish never",
-    "deploy": "electron-builder build --mac --win --publish always"
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +32,7 @@
     "electron-builder": "^20.40.2"
   },
   "dependencies": {
+    "electron-regedit": "^2.0.0",
     "electron-updater": "^4.0.6"
   }
 }

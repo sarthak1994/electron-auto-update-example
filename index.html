@@ -27,7 +27,12 @@
 </head>
 <body>
   <h1>Electron Auto Update Example</h1>
+  <h2 id="username"></h2>
+  <h2 id="isprivilaged"></h2>
   <p id="version"></p>
+  <button id="block-fb" onClick="block_website('facebook.com')" >
+      Block fb
+    </button>
   <div id="notification" class="hidden">
     <p id="message"></p>
     <button id="close-button" onClick="closeNotification()">
@@ -43,6 +48,8 @@
     const notification = document.getElementById('notification');
     const message = document.getElementById('message');
     const restartButton = document.getElementById('restart-button');
+    const username = document.getElementById('username');
+    const isprivilaged = document.getElementById('isprivilaged');
     
     ipcRenderer.send('app_version');
     ipcRenderer.on('app_version', (event, arg) => {
@@ -63,12 +70,32 @@
       notification.classList.remove('hidden');
     });
 
+    ipcRenderer.send('username');
+    ipcRenderer.on('username', (event, arg) => {
+      ipcRenderer.removeAllListeners('username');
+      username.innerText = 'Logged in user: ' + arg.version;
+    });
+
+    ipcRenderer.send('isprivilaged');
+    ipcRenderer.on('isprivilaged', (event, arg) => {
+      ipcRenderer.removeAllListeners('isprivilaged');
+      isprivilaged.innerText = 'isprivilaged:  ' + arg.isprivilaged;
+    });
+
     function closeNotification() {
       notification.classList.add('hidden');
     }
     
     function restartApp() {
       ipcRenderer.send('restart_app');
+    }
+
+    function block_website(url){
+      ipcRenderer.send('block_website',{website:url});
+      ipcRenderer.on('block_website', (event, arg) => {
+        ipcRenderer.removeAllListeners('block_fb');
+        isprivilaged.innerText = 'fb blocked:  ' + arg.is_blocked;
+      });
     }
   </script>
 </body>
