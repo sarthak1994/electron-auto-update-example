@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>Electron Auto Update Example</title>
+  <title>Ob</title>
   <style>
     body {
       box-sizing: border-box;
@@ -26,10 +26,12 @@
   </style>
 </head>
 <body>
-  <h1>Electron Auto Update Example</h1>
+  <h1>Ob</h1>
   <h2 id="username"></h2>
-  <h2 id="isprivilaged"></h2>
+  <h2 id="loggedin"></h2>
   <p id="version"></p>
+  <!-- <h2 id="isprivilaged"></h2>
+  
   <button id="block-fb" onClick="block_website('facebook.com')" >
       Block fb
     </button>
@@ -41,7 +43,7 @@
     <button id="restart-button" onClick="restartApp()" class="hidden">
       Restart
     </button>
-  </div>
+  </div> -->
   <script>
     const { ipcRenderer } = require('electron');
     const version = document.getElementById('version');
@@ -49,6 +51,7 @@
     const message = document.getElementById('message');
     const restartButton = document.getElementById('restart-button');
     const username = document.getElementById('username');
+    const loggedin = document.getElementById('loggedin');
     const isprivilaged = document.getElementById('isprivilaged');
     
     ipcRenderer.send('app_version');
@@ -57,30 +60,34 @@
       version.innerText = 'Version ' + arg.version;
     });
 
-    ipcRenderer.on('update_available', () => {
-      ipcRenderer.removeAllListeners('update_available');
-      message.innerText = 'A new update is available. Downloading now...';
-      notification.classList.remove('hidden');
-    });
+    // ipcRenderer.on('update_available', () => {
+    //   ipcRenderer.removeAllListeners('update_available');
+    //   message.innerText = 'A new update is available. Downloading now...';
+    //   notification.classList.remove('hidden');
+    // });
 
-    ipcRenderer.on('update_downloaded', () => {
-      ipcRenderer.removeAllListeners('update_downloaded');
-      message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
-      restartButton.classList.remove('hidden');
-      notification.classList.remove('hidden');
-    });
+    // ipcRenderer.on('update_downloaded', () => {
+    //   ipcRenderer.removeAllListeners('update_downloaded');
+    //   message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
+    //   restartButton.classList.remove('hidden');
+    //   notification.classList.remove('hidden');
+    // });
 
     ipcRenderer.send('username');
     ipcRenderer.on('username', (event, arg) => {
       ipcRenderer.removeAllListeners('username');
-      username.innerText = 'Logged in user: ' + arg.version;
+      username.innerText = 'Hello: ' + arg.version;
     });
 
-    ipcRenderer.send('isprivilaged');
-    ipcRenderer.on('isprivilaged', (event, arg) => {
-      ipcRenderer.removeAllListeners('isprivilaged');
-      isprivilaged.innerText = 'isprivilaged:  ' + arg.isprivilaged;
+    ipcRenderer.on('loggedin', (event, arg) => {
+      loggedin.innerText = 'Hello: ' + arg.loggedin;
     });
+
+    // ipcRenderer.send('isprivilaged');
+    // ipcRenderer.on('isprivilaged', (event, arg) => {
+    //   ipcRenderer.removeAllListeners('isprivilaged');
+    //   isprivilaged.innerText = 'isprivilaged:  ' + arg.isprivilaged;
+    // });
 
     function closeNotification() {
       notification.classList.add('hidden');
@@ -97,5 +104,6 @@
         isprivilaged.innerText = 'fb blocked:  ' + arg.is_blocked;
       });
     }
+    
   </script>
 </body>
