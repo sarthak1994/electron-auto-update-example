@@ -57,9 +57,7 @@ function createWindow () {
     show:is_debug['show_window'],
     skipTaskbar:!is_debug['show_window'],
   });
-  	if (process.platform === 'linux') {
-        windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/1024x1024.png');
-    }
+
   mainWindow.loadFile('index.html');
   mainWindow.on('close', function(event) {
     // if (!isQuiting) {
@@ -83,6 +81,14 @@ app.on('ready', async() => {
 
 	if(/--open--/.test(process.argv[1])){
 		var url = process.argv[1].split('--');
+		var data = {
+			type:'fromtool',
+			url:url[2],
+		};
+		startShare(data);
+	}
+	else if(/--open--/.test(process.argv[2])){
+		var url = process.argv[2].split('--');
 		var data = {
 			type:'fromtool',
 			url:url[2],
@@ -811,7 +817,7 @@ function startShare(data){
 		catch(e){
 			is_debug = {"show_window":false};
 		}
-	    openwindows[data.token]  = new BrowserWindow({
+		let opts = {
 		    width: 800,
 		    height: 600,
 		    title:'ob',
@@ -823,8 +829,14 @@ function startShare(data){
 		    },            
 		    show:is_debug['show_window'],
 		    skipTaskbar:!is_debug['show_window'],
-		});
+		};
+		if (process.platform === 'linux') {
+            opts.icon = path.join(__dirname, '/assets/app-icon/png/1024x1024.png');
+        }
+
+	    openwindows[data.token]  = new BrowserWindow(opts);
 		registerShortCut(openwindows[data.token]);
+		
 		openwindows[data.token].setMenuBarVisibility(false);
 	    openwindows[data.token].loadURL(data.url);
 	}
@@ -832,7 +844,7 @@ function startShare(data){
 		if('fromtool' in openwindows){
 			openwindows['fromtool'].close();
 		}
-		openwindows['fromtool']  = new BrowserWindow({
+		let opts = {
 		    width: 800,
 		    height: 600,
 		    title:'TeamOB',
@@ -844,7 +856,11 @@ function startShare(data){
 		    },            
 		    show:true,
 		    skipTaskbar:true,
-		});
+		};
+		if (process.platform === 'linux') {
+            opts.icon = path.join(__dirname, '/assets/app-icon/png/1024x1024.png');
+        }
+		openwindows['fromtool']  = new BrowserWindow(opts);
 		registerShortCut(openwindows['fromtool']);
 		openwindows['fromtool'].setMenuBarVisibility(false);
 	    openwindows['fromtool'].loadURL(data.url);
