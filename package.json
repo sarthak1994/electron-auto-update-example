@@ -22,7 +22,8 @@
     },
     "linux": {
       "target": "zip",
-      "icon": "./assets/app-icon/png/32x32.png.png"
+      "icon": "./assets/app-icon/png/32x32.png.png",
+      "executableName":"TeamOB"
     },
     "extraFiles": [
       "log/*"

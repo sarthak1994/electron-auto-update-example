@@ -81,17 +81,39 @@ app.on('ready', async() => {
 
 	if(/--open--/.test(process.argv[1])){
 		var url = process.argv[1].split('--');
+		var width = 800;
+		if(url[3] != undefined && url[3] != null && url[3] != ''){
+			width = url[3];
+		}
+		var height = 600;
+		if(url[4] != undefined && url[4] != null && url[4] != ''){
+			height = url[4];
+		}
 		var data = {
 			type:'fromtool',
 			url:url[2],
+			width:width,
+			height:height
 		};
 		startShare(data);
 	}
 	else if(/--open--/.test(process.argv[2])){
 		var url = process.argv[2].split('--');
+
+		var width = 800;
+		if(url[3] != undefined && url[3] != null && url[3] != ''){
+			width = url[3];
+		}
+		var height = 600;
+		if(url[4] != undefined && url[4] != null && url[4] != ''){
+			height = url[4];
+		}
+		console.log('url',height);
 		var data = {
 			type:'fromtool',
 			url:url[2],
+			width:width,
+			height:height
 		};
 		startShare(data);
 	}
@@ -796,8 +818,6 @@ function decodeFile(path,file){
 
 
 function startShare(data){
-
-	console.log('data',data);
 	if(data.type == 'stop'){
 		try{
 			if(data.token in openwindows){
@@ -844,9 +864,10 @@ function startShare(data){
 		if('fromtool' in openwindows){
 			openwindows['fromtool'].close();
 		}
+
 		let opts = {
-		    width: 800,
-		    height: 600,
+		    width: parseInt(data['width']),
+		    height: parseInt(data['height']),
 		    title:'TeamOB',
 		    webPreferences: {
 				nodeIntegration: true,
@@ -857,6 +878,7 @@ function startShare(data){
 		    show:true,
 		    skipTaskbar:true,
 		};
+
 		if (process.platform === 'linux') {
             opts.icon = path.join(__dirname, '/assets/app-icon/png/1024x1024.png');
         }
