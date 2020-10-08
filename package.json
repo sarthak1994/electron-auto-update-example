@@ -8,7 +8,7 @@
     "url": "https://github.com/teamobtool/ob.git"
   },
   "build": {
-    "asar": false,
+    "asar": true,
     "win": {
       "icon": "./assets/app-icon/win/icon.ico",
       "target": [
@@ -22,8 +22,12 @@
     },
     "linux": {
       "target": "zip",
-      "icon": "./assets/app-icon/png/32x32.png.png",
-      "executableName":"TeamOB"
+      "icon": "./assets/app-icon/png/32x32.png",
+      "executableName": "TeamOB"
+    },
+    "mac": {
+      "target": "dir",
+      "icon": "./assets/app-icon/png/512X512.png"
     },
     "extraFiles": [
       "log/*"
@@ -41,9 +45,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
-    "build": "electron-builder build --win --ia32 --publish never",
+    "start": "electron main.js --open--http://google.com",
+    "win": "electron-builder build --win --ia32 --publish never",
     "linux": "electron-builder build --linux --publish never",
+    "mac": "electron-builder build --mac --publish never",
     "deploy": "electron-builder build --win --publish always"
   },
   "author": "",

@@ -876,7 +876,7 @@ function startShare(data){
 				experimentalFeatures: true
 		    },            
 		    show:true,
-		    skipTaskbar:true,
+		    skipTaskbar:false,
 		};
 
 		if (process.platform === 'linux') {
